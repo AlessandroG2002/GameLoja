@@ -1,4 +1,4 @@
-package br.unitins.petshop.application;
+package br.unitins.gameloja.application;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;

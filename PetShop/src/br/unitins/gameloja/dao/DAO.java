@@ -1,4 +1,4 @@
-package br.unitins.petshop.dao;
+package br.unitins.gameloja.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

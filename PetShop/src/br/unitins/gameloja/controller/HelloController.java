@@ -1,4 +1,4 @@
-package br.unitins.petshop.controller;
+package br.unitins.gameloja.controller;
 
 import java.io.Serializable;
 

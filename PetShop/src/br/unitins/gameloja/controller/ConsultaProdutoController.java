@@ -1,4 +1,4 @@
-package br.unitins.petshop.controller;
+package br.unitins.gameloja.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,12 +9,12 @@ import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import br.unitins.petshop.application.Util;
-import br.unitins.petshop.dao.DAO;
-import br.unitins.petshop.dao.ProdutoDAO;
-import br.unitins.petshop.model.Peso;
-import br.unitins.petshop.model.Produto;
-import br.unitins.petshop.model.TipoPeso;
+import br.unitins.gameloja.application.Util;
+import br.unitins.gameloja.dao.DAO;
+import br.unitins.gameloja.dao.ProdutoDAO;
+import br.unitins.gameloja.model.Peso;
+import br.unitins.gameloja.model.Produto;
+import br.unitins.gameloja.model.TipoPeso;
 
 @Named
 @ViewScoped

@@ -1,4 +1,4 @@
-package br.unitins.petshop.dao;
+package br.unitins.gameloja.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.unitins.petshop.model.Peso;
-import br.unitins.petshop.model.Produto;
-import br.unitins.petshop.model.TipoPeso;
+import br.unitins.gameloja.model.Peso;
+import br.unitins.gameloja.model.Produto;
+import br.unitins.gameloja.model.TipoPeso;
 
 public class ProdutoDAO implements DAO<Produto> {
 

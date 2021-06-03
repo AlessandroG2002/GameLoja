@@ -1,4 +1,4 @@
-package br.unitins.petshop.dao;
+package br.unitins.gameloja.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.unitins.petshop.model.Perfil;
-import br.unitins.petshop.model.Usuario;
+import br.unitins.gameloja.model.Perfil;
+import br.unitins.gameloja.model.Usuario;
 
 public class UsuarioDAO implements DAO<Usuario> {
 	

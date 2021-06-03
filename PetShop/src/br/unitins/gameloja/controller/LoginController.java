@@ -1,14 +1,14 @@
-package br.unitins.petshop.controller;
+package br.unitins.gameloja.controller;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import br.unitins.petshop.application.Session;
-import br.unitins.petshop.application.Util;
-import br.unitins.petshop.dao.UsuarioDAO;
-import br.unitins.petshop.model.Usuario;
+import br.unitins.gameloja.application.Session;
+import br.unitins.gameloja.application.Util;
+import br.unitins.gameloja.dao.UsuarioDAO;
+import br.unitins.gameloja.model.Usuario;
 
 @Named
 @RequestScoped

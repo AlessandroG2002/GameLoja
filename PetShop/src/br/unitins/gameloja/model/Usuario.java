@@ -1,4 +1,4 @@
-package br.unitins.petshop.model;
+package br.unitins.gameloja.model;
 
 import java.time.LocalDate;
 

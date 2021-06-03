@@ -1,4 +1,4 @@
-package br.unitins.petshop.model;
+package br.unitins.gameloja.model;
 
 public enum Perfil {
 	ADMINISTRADOR (1, "Adminstrador"), 

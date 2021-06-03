@@ -1,4 +1,4 @@
-package br.unitins.petshop.model;
+package br.unitins.gameloja.model;
 
 public enum TipoPeso {
 	KG(1, "KG"), 

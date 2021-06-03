@@ -1,4 +1,4 @@
-package br.unitins.petshop.controller;
+package br.unitins.gameloja.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,11 +8,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import br.unitins.petshop.application.Util;
-import br.unitins.petshop.dao.DAO;
-import br.unitins.petshop.dao.UsuarioDAO;
-import br.unitins.petshop.model.Perfil;
-import br.unitins.petshop.model.Usuario;
+import br.unitins.gameloja.application.Util;
+import br.unitins.gameloja.dao.DAO;
+import br.unitins.gameloja.dao.UsuarioDAO;
+import br.unitins.gameloja.model.Perfil;
+import br.unitins.gameloja.model.Usuario;
 
 @Named
 @ViewScoped
