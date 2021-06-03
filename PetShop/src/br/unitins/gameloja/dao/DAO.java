@@ -14,12 +14,11 @@ public interface DAO<T> {
 	public T obterUm(Integer id);
 
 	public static Connection getConnection() {
-		// Registro do driver do postgresql
 	    try {
 			Class.forName("org.postgresql.Driver");
 			Connection connection = null;
 			connection = DriverManager
-					.getConnection("jdbc:postgresql://127.0.0.1:5432/petshopdb", "topicos1", "123456");
+					.getConnection("jdbc:postgresql://127.0.0.1:5432/gamelojadb", "topicos1", "123456");
 			return connection;
 	    } catch (ClassNotFoundException e) {
 			System.out.println("O Driver não foi encontrado.");
