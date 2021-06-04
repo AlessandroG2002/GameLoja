@@ -17,7 +17,7 @@ public class Session {
 	
 	private ExternalContext getExternalContext() {
 		if (FacesContext.getCurrentInstance() == null)
-			throw new RuntimeException("Voce nao está roando a aplicacao em um servidor web");
+			throw new RuntimeException("Voce nao está rodando a aplicacao em um servidor web");
 		
 		return FacesContext.getCurrentInstance().getExternalContext();
 	}

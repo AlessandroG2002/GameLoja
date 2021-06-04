@@ -9,29 +9,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.gameloja.model.Peso;
-import br.unitins.gameloja.model.Produto;
+import br.unitins.gameloja.model.Genero;
+import br.unitins.gameloja.model.Jogo;
 import br.unitins.gameloja.model.TipoPeso;
 
-public class ProdutoDAO implements DAO<Produto> {
+public class JogoDAO implements DAO<Jogo> {
 
 	@Override
-	public boolean inserir(Produto obj) {
+	public boolean inserir(Jogo obj) {
 		Connection conn = DAO.getConnection();
 		boolean deuErro = false;
 		
 		StringBuffer sql = new StringBuffer();
-		sql.append("INSERT INTO produto ");
-		sql.append(" (nome, descricao, estoque, preco) ");
+		sql.append("INSERT INTO jogo ");
+		sql.append(" (nome, descricao, estoque, preco, genero) ");
 		sql.append("VALUES ");
-		sql.append(" (?, ?, ?, ?) ");
+		sql.append(" (?, ?, ?, ?, ?) ");
 		
 		PreparedStatement stat = null;
 		try {
 			stat = conn.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 			stat.setString(1, obj.getNome());
 			stat.setString(2, obj.getDescricao());
-			stat.setDouble(3, obj.getEstoque());
+			stat.setInt(3, obj.getEstoque());
 			stat.setDouble(4, obj.getPreco());
+			
+			if (obj.getGenero() != null)
+				stat.setInt(5, obj.getGenero().getValue());
+			else 
+				stat.setObject(5, null);
 			
 			stat.execute();
 				
@@ -65,16 +71,17 @@ public class ProdutoDAO implements DAO<Produto> {
 	}
 
 	@Override
-	public boolean alterar(Produto obj) {
+	public boolean alterar(Jogo obj) {
 		Connection conn = DAO.getConnection();
 		boolean deuErro = false;
 		
 		StringBuffer sql = new StringBuffer();
-		sql.append("UPDATE produto SET ");
+		sql.append("UPDATE jogo SET ");
 		sql.append(" nome = ?, ");
 		sql.append(" descricao = ?, ");
 		sql.append(" estoque = ?, ");
-		sql.append(" preco = ? ");
+		sql.append(" preco = ?, ");
+		sql.append(" genero = ? ");
 		sql.append("WHERE ");
 		sql.append(" id = ? ");
 	
@@ -85,8 +92,12 @@ public class ProdutoDAO implements DAO<Produto> {
 			stat.setString(2, obj.getDescricao());
 			stat.setDouble(3, obj.getEstoque());
 			stat.setDouble(4, obj.getPreco());
+			if (obj.getGenero() != null)
+				stat.setInt(5, obj.getGenero().getValue());
+			else 
+				stat.setObject(5, null);
 			
-			stat.setInt(5, obj.getId());
+			stat.setInt(6, obj.getId());
 			
 			stat.execute();
 		} catch (Exception e) {
@@ -116,7 +127,7 @@ public class ProdutoDAO implements DAO<Produto> {
 		boolean deuErro = false;
 		
 		StringBuffer sql = new StringBuffer();
-		sql.append("DELETE FROM produto WHERE id = ? ");
+		sql.append("DELETE FROM jogo WHERE id = ? ");
 		
 		PreparedStatement stat = null;
 		try {
@@ -147,27 +158,28 @@ public class ProdutoDAO implements DAO<Produto> {
 	}
 
 	@Override
-	public List<Produto> obterTodos() {
+	public List<Jogo> obterTodos() {
 		Connection conn = DAO.getConnection();
 		
-		List<Produto> listaProduto = new ArrayList<Produto>();
+		List<Jogo> listaJogo = new ArrayList<Jogo>();
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT ");
-		sql.append("  p.id, ");
-		sql.append("  p.nome, ");
-		sql.append("  p.descricao, ");
-		sql.append("  p.estoque, ");
-		sql.append("  p.preco, ");
+		sql.append("  j.id, ");
+		sql.append("  j.nome, ");
+		sql.append("  j.descricao, ");
+		sql.append("  j.estoque, ");
+		sql.append("  j.preco, ");
+		sql.append("  j.genero, ");
 		sql.append("  pe.id AS id_peso, ");
 		sql.append("  pe.valor, ");
-		sql.append("  pe.tipopeso ");
+		sql.append("  pe.tipo_peso ");
 		sql.append("FROM ");
-		sql.append("  produto p, ");
+		sql.append("  jogo j, ");
 		sql.append("  peso pe ");
 		sql.append("WHERE ");
-		sql.append("  p.id = pe.id ");
-		sql.append("ORDER BY p.nome ");
+		sql.append("  j.id = pe.id ");
+		sql.append("ORDER BY j.nome ");
 		
 		PreparedStatement stat = null;
 		try {
@@ -175,23 +187,24 @@ public class ProdutoDAO implements DAO<Produto> {
 			ResultSet rs = stat.executeQuery();
 			
 			while(rs.next()) {
-				Produto produto = new Produto();
-				produto.setId(rs.getInt("id"));
-				produto.setNome(rs.getString("nome"));
-				produto.setDescricao(rs.getString("descricao"));
-				produto.setEstoque(rs.getDouble("estoque"));
-				produto.setPreco(rs.getDouble("preco"));
+				Jogo jogo = new Jogo();
+				jogo.setId(rs.getInt("id"));
+				jogo.setNome(rs.getString("nome"));
+				jogo.setDescricao(rs.getString("descricao"));
+				jogo.setEstoque(rs.getInt("estoque"));
+				jogo.setPreco(rs.getDouble("preco"));
+				jogo.setGenero(Genero.valueOf(rs.getInt("genero")));
 				
-				produto.setPeso(new Peso());
-				produto.getPeso().setId(rs.getInt("id_peso"));
-				produto.getPeso().setValor(rs.getDouble("valor"));
-				produto.getPeso().setTipoPeso(TipoPeso.valueOf(rs.getInt("tipopeso")));
+				jogo.setPeso(new Peso());
+				jogo.getPeso().setId(rs.getInt("id_peso"));
+				jogo.getPeso().setValor(rs.getDouble("valor"));
+				jogo.getPeso().setTipoPeso(TipoPeso.valueOf(rs.getInt("tipo_peso")));
 				
-				listaProduto.add(produto);
+				listaJogo.add(jogo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			listaProduto = null;
+			listaJogo = null;
 		} finally {
 			try {
 				stat.close();
@@ -205,35 +218,36 @@ public class ProdutoDAO implements DAO<Produto> {
 			}
 		}
 		
-		if (listaProduto == null || listaProduto.isEmpty())
+		if (listaJogo == null || listaJogo.isEmpty())
 			return null;
 		
-		return listaProduto;
+		return listaJogo;
 	}
 	
 
-	public List<Produto> obterPeloNome(String nome) {
+	public List<Jogo> obterPeloNome(String nome) {
 		Connection conn = DAO.getConnection();
 		
-		List<Produto> listaProduto = new ArrayList<Produto>();
+		List<Jogo> listaJogo = new ArrayList<Jogo>();
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT ");
-		sql.append("  p.id, ");
-		sql.append("  p.nome, ");
-		sql.append("  p.descricao, ");
-		sql.append("  p.estoque, ");
-		sql.append("  p.preco, ");
+		sql.append("  j.id, ");
+		sql.append("  j.nome, ");
+		sql.append("  j.descricao, ");
+		sql.append("  j.estoque, ");
+		sql.append("  j.preco, ");
+		sql.append("  j.genero, ");
 		sql.append("  pe.id AS id_peso, ");
 		sql.append("  pe.valor, ");
-		sql.append("  pe.tipopeso ");
+		sql.append("  pe.tipo_peso ");
 		sql.append("FROM ");
-		sql.append("  produto p, ");
+		sql.append("  jogo j, ");
 		sql.append("  peso pe ");
 		sql.append("WHERE ");
-		sql.append("  p.id = pe.id ");
-		sql.append("  AND p.nome ILIKE ? ");
-		sql.append("ORDER BY p.nome ");
+		sql.append("  j.id = pe.id ");
+		sql.append("  AND j.nome ILIKE ? ");
+		sql.append("ORDER BY j.nome ");
 		
 		PreparedStatement stat = null;
 		try {
@@ -242,23 +256,24 @@ public class ProdutoDAO implements DAO<Produto> {
 			ResultSet rs = stat.executeQuery();
 			
 			while(rs.next()) {
-				Produto produto = new Produto();
-				produto.setId(rs.getInt("id"));
-				produto.setNome(rs.getString("nome"));
-				produto.setDescricao(rs.getString("descricao"));
-				produto.setEstoque(rs.getDouble("estoque"));
-				produto.setPreco(rs.getDouble("preco"));
+				Jogo jogo = new Jogo();
+				jogo.setId(rs.getInt("id"));
+				jogo.setNome(rs.getString("nome"));
+				jogo.setDescricao(rs.getString("descricao"));
+				jogo.setEstoque(rs.getInt("estoque"));
+				jogo.setPreco(rs.getDouble("preco"));
+				jogo.setGenero(Genero.valueOf(rs.getInt("genero")));
 				
-				produto.setPeso(new Peso());
-				produto.getPeso().setId(rs.getInt("id_peso"));
-				produto.getPeso().setValor(rs.getDouble("valor"));
-				produto.getPeso().setTipoPeso(TipoPeso.valueOf(rs.getInt("tipopeso")));
+				jogo.setPeso(new Peso());
+				jogo.getPeso().setId(rs.getInt("id_peso"));
+				jogo.getPeso().setValor(rs.getDouble("valor"));
+				jogo.getPeso().setTipoPeso(TipoPeso.valueOf(rs.getInt("tipo_peso")));
 				
-				listaProduto.add(produto);
+				listaJogo.add(jogo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			listaProduto = null;
+			listaJogo = null;
 		} finally {
 			try {
 				stat.close();
@@ -272,34 +287,35 @@ public class ProdutoDAO implements DAO<Produto> {
 			}
 		}
 		
-		if (listaProduto == null || listaProduto.isEmpty())
+		if (listaJogo == null || listaJogo.isEmpty())
 			return null;
 		
-		return listaProduto;
+		return listaJogo;
 	}
 	
-	public List<Produto> obterPelaDescricao(String descricao) {
+	public List<Jogo> obterPelaDescricao(String descricao) {
 		Connection conn = DAO.getConnection();
 		
-		List<Produto> listaProduto = new ArrayList<Produto>();
+		List<Jogo> listaJogo = new ArrayList<Jogo>();
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT ");
-		sql.append("  p.id, ");
-		sql.append("  p.nome, ");
-		sql.append("  p.descricao, ");
-		sql.append("  p.estoque, ");
-		sql.append("  p.preco, ");
+		sql.append("  j.id, ");
+		sql.append("  j.nome, ");
+		sql.append("  j.descricao, ");
+		sql.append("  j.estoque, ");
+		sql.append("  j.preco, ");
+		sql.append("  j.genero, ");
 		sql.append("  pe.id AS id_peso, ");
 		sql.append("  pe.valor, ");
-		sql.append("  pe.tipopeso ");
+		sql.append("  pe.tipo_peso ");
 		sql.append("FROM ");
-		sql.append("  produto p, ");
+		sql.append("  jogo j, ");
 		sql.append("  peso pe ");
 		sql.append("WHERE ");
-		sql.append("  p.id = pe.id ");
-		sql.append("  AND p.descricao ILIKE ? ");
-		sql.append("ORDER BY p.nome ");
+		sql.append("  j.id = pe.id ");
+		sql.append("  AND j.descricao ILIKE ? ");
+		sql.append("ORDER BY j.nome ");
 		
 		PreparedStatement stat = null;
 		try {
@@ -308,23 +324,24 @@ public class ProdutoDAO implements DAO<Produto> {
 			ResultSet rs = stat.executeQuery();
 			
 			while(rs.next()) {
-				Produto produto = new Produto();
-				produto.setId(rs.getInt("id"));
-				produto.setNome(rs.getString("nome"));
-				produto.setDescricao(rs.getString("descricao"));
-				produto.setEstoque(rs.getDouble("estoque"));
-				produto.setPreco(rs.getDouble("preco"));
+				Jogo jogo = new Jogo();
+				jogo.setId(rs.getInt("id"));
+				jogo.setNome(rs.getString("nome"));
+				jogo.setDescricao(rs.getString("descricao"));
+				jogo.setEstoque(rs.getInt("estoque"));
+				jogo.setPreco(rs.getDouble("preco"));
+				jogo.setGenero(Genero.valueOf(rs.getInt("genero")));
 				
-				produto.setPeso(new Peso());
-				produto.getPeso().setId(rs.getInt("id_peso"));
-				produto.getPeso().setValor(rs.getDouble("valor"));
-				produto.getPeso().setTipoPeso(TipoPeso.valueOf(rs.getInt("tipopeso")));
+				jogo.setPeso(new Peso());
+				jogo.getPeso().setId(rs.getInt("id_peso"));
+				jogo.getPeso().setValor(rs.getDouble("valor"));
+				jogo.getPeso().setTipoPeso(TipoPeso.valueOf(rs.getInt("tipo_peso")));
 				
-				listaProduto.add(produto);
+				listaJogo.add(jogo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			listaProduto = null;
+			listaJogo = null;
 		} finally {
 			try {
 				stat.close();
@@ -338,30 +355,31 @@ public class ProdutoDAO implements DAO<Produto> {
 			}
 		}
 		
-		if (listaProduto == null || listaProduto.isEmpty())
+		if (listaJogo == null || listaJogo.isEmpty())
 			return null;
 		
-		return listaProduto;
+		return listaJogo;
 	}
 
 
 	@Override
-	public Produto obterUm(Integer id) {
+	public Jogo obterUm(Integer id) {
 		Connection conn = DAO.getConnection();
 		
-		Produto produto = null;
+		Jogo jogo = null;
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT ");
-		sql.append("  u.id, ");
-		sql.append("  u.nome, ");
-		sql.append("  u.descricao, ");
-		sql.append("  u.estoque, ");
-		sql.append("  u.preco ");
+		sql.append("  j.id, ");
+		sql.append("  j.nome, ");
+		sql.append("  j.descricao, ");
+		sql.append("  j.estoque, ");
+		sql.append("  j.preco, ");
+		sql.append("  j.genero ");
 		sql.append("FROM ");
-		sql.append("  produto u ");
+		sql.append("  jogo j ");
 		sql.append("WHERE ");
-		sql.append("  u.id = ? ");
+		sql.append("  j.id = ? ");
 		
 		PreparedStatement stat = null;
 		try {
@@ -371,20 +389,21 @@ public class ProdutoDAO implements DAO<Produto> {
 			ResultSet rs = stat.executeQuery();
 			
 			if(rs.next()) {
-				produto = new Produto();
-				produto.setId(rs.getInt("id"));
-				produto.setNome(rs.getString("nome"));
-				produto.setDescricao(rs.getString("descricao"));
-				produto.setEstoque(rs.getDouble("estoque"));
-				produto.setPreco(rs.getDouble("preco"));
+				jogo = new Jogo();
+				jogo.setId(rs.getInt("id"));
+				jogo.setNome(rs.getString("nome"));
+				jogo.setDescricao(rs.getString("descricao"));
+				jogo.setEstoque(rs.getInt("estoque"));
+				jogo.setPreco(rs.getDouble("preco"));
+				jogo.setGenero(Genero.valueOf(rs.getInt("genero")));
 				
 				PesoDAO dao = new PesoDAO();
-				produto.setPeso(dao.obterUm(produto.getId()));
+				jogo.setPeso(dao.obterUm(jogo.getId()));
 				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			produto = null;
+			jogo = null;
 		} finally {
 			try {
 				stat.close();
@@ -398,7 +417,7 @@ public class ProdutoDAO implements DAO<Produto> {
 			}
 		}
 		
-		return produto;
+		return jogo;
 	}
 
 }

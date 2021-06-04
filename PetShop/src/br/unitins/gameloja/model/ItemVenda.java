@@ -4,7 +4,7 @@ public class ItemVenda {
 	private Integer id;
 	private Integer quantidade;
 	private Double valorUnitario;
-	private Produto produto;
+	private Jogo jogo;
 
 	public Integer getId() {
 		return id;
@@ -30,19 +30,19 @@ public class ItemVenda {
 		this.valorUnitario = valorUnitario;
 	}
 
-	public Produto getProduto() {
-		return produto;
+	public Jogo getJogo() {
+		return jogo;
 	}
 
-	public void setProduto(Produto produto) {
-		this.produto = produto;
+	public void setJogo(Jogo jogo) {
+		this.jogo = jogo;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((produto == null) ? 0 : produto.hashCode());
+		result = prime * result + ((jogo == null) ? 0 : jogo.hashCode());
 		return result;
 	}
 
@@ -55,10 +55,10 @@ public class ItemVenda {
 		if (getClass() != obj.getClass())
 			return false;
 		ItemVenda other = (ItemVenda) obj;
-		if (produto == null) {
-			if (other.produto != null)
+		if (jogo == null) {
+			if (other.jogo != null)
 				return false;
-		} else if (!produto.equals(other.produto))
+		} else if (!jogo.equals(other.jogo))
 			return false;
 		return true;
 	}

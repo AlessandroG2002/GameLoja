@@ -21,28 +21,36 @@
 					<h:panelGrid id="pgPrincipal" columns="2">
 					
 						<h:outputLabel value="Nome: " />
-						<h:inputText value="#{produtoController.produto.nome}"
+						<h:inputText value="#{jogoController.jogo.nome}"
 							 validatorMessage="O nome tem que possuir mais de 6 caracteres."
 							 required="true" requiredMessage="O nome deve ser preenchido.">
 							<f:validateLength minimum="6" />
 						</h:inputText>
 						
 						<h:outputLabel value="Descrição: " />
-						<h:inputText value="#{produtoController.produto.descricao}" />
+						<h:inputText value="#{jogoController.jogo.descricao}" />
 						
 						<h:outputLabel value="Estoque: " />
-						<h:inputText value="#{produtoController.produto.estoque}" />
+						<h:inputText value="#{jogoController.jogo.estoque}" />
 						
 						<h:outputLabel value="Preço: " />
-						<h:inputText value="#{produtoController.produto.preco}" />	
+						<h:inputText value="#{jogoController.jogo.preco}" />	
 						
 						<h:outputLabel value="Peso: " />
-						<h:inputText value="#{produtoController.produto.peso.valor}" />	
+						<h:inputText value="#{jogoController.jogo.peso.valor}" />	
+						
+						<h:outputLabel value="Gênero: " />
+						<h:selectOneMenu value="#{jogoController.jogo.genero}">
+							<f:selectItem itemLabel="Selecione ..."/>
+							<f:selectItems value="#{jogoController.listaGenero}"
+										   var="obj" 
+										   itemLabel="#{obj.label}"/>
+						</h:selectOneMenu>
 						
 						<h:outputLabel value="Tipo do Peso: " />
-						<h:selectOneMenu value="#{produtoController.produto.peso.tipoPeso}">
+						<h:selectOneMenu value="#{jogoController.jogo.peso.tipoPeso}">
 							<f:selectItem itemLabel="Selecione ..."/>
-							<f:selectItems value="#{produtoController.listaTipoPeso}"
+							<f:selectItems value="#{jogoController.listaTipoPeso}"
 										   var="obj" 
 										   itemLabel="#{obj.label}"/>
 						</h:selectOneMenu>
@@ -51,25 +59,25 @@
 					
 					<h:panelGrid id="pgBotoes" columns="4">
 						<h:commandButton value="Incluir" 
-							rendered="#{produtoController.produto.id == null}"
-							actionListener="#{produtoController.incluir}">
+							rendered="#{jogoController.jogo.id == null}"
+							actionListener="#{jogoController.incluir}">
 							<f:ajax execute="@this pgPrincipal" render="@form" />
 						</h:commandButton>
 							
 						<h:commandButton value="Alterar" 
-							rendered="#{produtoController.produto.id != null}"
-							actionListener="#{produtoController.alterar}"  >
+							rendered="#{jogoController.jogo.id != null}"
+							actionListener="#{jogoController.alterar}"  >
 							<f:ajax execute="@this pgPrincipal" render="@form" />
 						</h:commandButton>
 			
 						<h:commandButton value="Excluir" 
-							rendered="#{produtoController.produto.id != null}"
-							actionListener="#{produtoController.excluir}" >
+							rendered="#{jogoController.jogo.id != null}"
+							actionListener="#{jogoController.excluir}" >
 							<f:ajax execute="@this" render="@form" />
 						</h:commandButton>
 							
 						<h:commandButton value="Limpar" 
-							actionListener="#{produtoController.limpar}">
+							actionListener="#{jogoController.limpar}">
 							<f:ajax execute="@this" render="pgPrincipal messages pgBotoes" />
 						</h:commandButton>
 					</h:panelGrid>

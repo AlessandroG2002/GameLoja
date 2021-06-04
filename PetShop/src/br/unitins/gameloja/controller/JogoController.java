@@ -11,23 +11,28 @@ import javax.inject.Named;
 
 import br.unitins.gameloja.application.Util;
 import br.unitins.gameloja.dao.DAO;
-import br.unitins.gameloja.dao.ProdutoDAO;
+import br.unitins.gameloja.dao.JogoDAO;
 import br.unitins.gameloja.model.Peso;
-import br.unitins.gameloja.model.Produto;
+import br.unitins.gameloja.model.Jogo;
 import br.unitins.gameloja.model.TipoPeso;
+import br.unitins.gameloja.model.Genero;
 
 @Named
 @ViewScoped
-public class ProdutoController implements Serializable {
+public class JogoController implements Serializable {
 	
 	private static final long serialVersionUID = 4153068272054439450L;
-	private Produto produto = null;
-	private List<Produto> listaProduto = null;
+	private Jogo jogo = null;
+	private List<Jogo> listaJogo = null;
 	
-	public ProdutoController() {
+	public JogoController() {
 		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-		flash.keep("produtoFlash");
-		setProduto((Produto)flash.get("produtoFlash"));
+		flash.keep("jogoFlash");
+		setJogo((Jogo)flash.get("jogoFlash"));
+	}
+	
+	public Genero[] getListaGenero() {
+		return Genero.values();
 	}
 	
 	public TipoPeso[] getListaTipoPeso() {
@@ -35,8 +40,8 @@ public class ProdutoController implements Serializable {
 	}
 	
 	public void incluir() {
-		DAO<Produto> dao = new ProdutoDAO();
-		if (dao.inserir(getProduto())) {
+		DAO<Jogo> dao = new JogoDAO();
+		if (dao.inserir(getJogo())) {
 			Util.addInfoMessage("Inclusão realizada com sucesso.");
 			limpar();
 		} else
@@ -44,8 +49,8 @@ public class ProdutoController implements Serializable {
 	}
 	
 	public void alterar() {
-		DAO<Produto> dao = new ProdutoDAO();
-		if (dao.alterar(getProduto())) {
+		DAO<Jogo> dao = new JogoDAO();
+		if (dao.alterar(getJogo())) {
 			Util.addInfoMessage("Alteração realizada com sucesso.");
 			limpar();
 		} else
@@ -53,11 +58,11 @@ public class ProdutoController implements Serializable {
 	}
 	
 	public void excluir() {
-		excluir(getProduto());
+		excluir(getJogo());
 	}
 	
-	public void excluir(Produto usu) {
-		DAO<Produto> dao = new ProdutoDAO();
+	public void excluir(Jogo usu) {
+		DAO<Jogo> dao = new JogoDAO();
 		if (dao.excluir(usu.getId())) {
 			Util.addInfoMessage("Exclusão realizada com sucesso.");
 			limpar();
@@ -67,39 +72,39 @@ public class ProdutoController implements Serializable {
 	
 	public void limpar() {
 		System.out.println("Limpar");
-		setProduto(null);
-		setListaProduto(null);
+		setJogo(null);
+		setListaJogo(null);
 	}
 	
-	public void editar(Produto usu) {
-		DAO<Produto> dao = new ProdutoDAO();
-		setProduto(dao.obterUm(usu.getId()));
+	public void editar(Jogo usu) {
+		DAO<Jogo> dao = new JogoDAO();
+		setJogo(dao.obterUm(usu.getId()));
 	}
 	
-	public List<Produto> getListaProduto() {
-		if (listaProduto == null) {
-			DAO<Produto> dao = new ProdutoDAO();
-			listaProduto = dao.obterTodos();
-			if (listaProduto == null)
-				listaProduto = new ArrayList<Produto>();
+	public List<Jogo> getListaJogo() {
+		if (listaJogo == null) {
+			DAO<Jogo> dao = new JogoDAO();
+			listaJogo = dao.obterTodos();
+			if (listaJogo == null)
+				listaJogo = new ArrayList<Jogo>();
 		}
-		return listaProduto;
+		return listaJogo;
 	}
 
-	public void setListaProduto(List<Produto> listaProduto) {
-		this.listaProduto = listaProduto;
+	public void setListaJogo(List<Jogo> listaJogo) {
+		this.listaJogo = listaJogo;
 	}
 
-	public Produto getProduto() {
-		if (produto == null) {
-			produto = new Produto();
-			produto.setPeso(new Peso());
+	public Jogo getJogo() {
+		if (jogo == null) {
+			jogo = new Jogo();
+			jogo.setPeso(new Peso());
 		}
-		return produto;
+		return jogo;
 	}
 
-	public void setProduto(Produto produto) {
-		this.produto = produto;
+	public void setJogo(Jogo jogo) {
+		this.jogo = jogo;
 	}
 
 }

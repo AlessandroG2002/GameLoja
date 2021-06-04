@@ -1,13 +1,13 @@
 package br.unitins.gameloja.model;
 
-public class Produto {
+public class Jogo {
 
 	private Integer id;
 	private String nome;
 	private String descricao;
-	private Double estoque;
+	private int estoque;
 	private Double preco;
-
+	private Genero genero;
 	private Peso peso;
 
 	public Integer getId() {
@@ -25,7 +25,7 @@ public class Produto {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+
 	public String getDescricao() {
 		return descricao;
 	}
@@ -34,11 +34,11 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public Double getEstoque() {
+	public int getEstoque() {
 		return estoque;
 	}
 
-	public void setEstoque(Double estoque) {
+	public void setEstoque(int estoque) {
 		this.estoque = estoque;
 	}
 
@@ -48,6 +48,14 @@ public class Produto {
 
 	public void setPreco(Double preco) {
 		this.preco = preco;
+	}
+
+	public Genero getGenero() {
+		return genero;
+	}
+
+	public void setGenero(Genero genero) {
+		this.genero = genero;
 	}
 
 	public Peso getPeso() {
@@ -74,7 +82,7 @@ public class Produto {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Produto other = (Produto) obj;
+		Jogo other = (Jogo) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

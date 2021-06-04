@@ -19,7 +19,7 @@ public class PesoDAO implements DAO<Peso> {
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("INSERT INTO peso ");
-		sql.append(" (id, valor, tipopeso) ");
+		sql.append(" (id, valor, tipo_peso) ");
 		sql.append("VALUES ");
 		sql.append(" (?, ?, ?) ");
 		
@@ -61,7 +61,7 @@ public class PesoDAO implements DAO<Peso> {
 		StringBuffer sql = new StringBuffer();
 		sql.append("UPDATE peso SET ");
 		sql.append(" valor = ?, ");
-		sql.append(" tipopeso = ? ");
+		sql.append(" tipo_peso = ? ");
 		sql.append("WHERE ");
 		sql.append(" id = ? ");
 	
@@ -141,7 +141,7 @@ public class PesoDAO implements DAO<Peso> {
 		sql.append("SELECT ");
 		sql.append("  p.id, ");
 		sql.append("  p.valor, ");
-		sql.append("  p.tipopeso ");
+		sql.append("  p.tipo_peso ");
 		sql.append("FROM ");
 		sql.append("  peso p ");
 		
@@ -154,7 +154,7 @@ public class PesoDAO implements DAO<Peso> {
 				Peso peso = new Peso();
 				peso.setId(rs.getInt("id"));
 				peso.setValor(rs.getDouble("valor"));
-				peso.setTipoPeso(TipoPeso.valueOf(rs.getInt("tipopeso")));
+				peso.setTipoPeso(TipoPeso.valueOf(rs.getInt("tipo_peso")));
 				listaPeso.add(peso);
 			}
 		} catch (Exception e) {
@@ -189,7 +189,7 @@ public class PesoDAO implements DAO<Peso> {
 		sql.append("SELECT ");
 		sql.append("  p.id, ");
 		sql.append("  p.valor, ");
-		sql.append("  p.tipopeso ");
+		sql.append("  p.tipo_peso ");
 		sql.append("FROM ");
 		sql.append("  peso p ");
 		sql.append("WHERE ");
@@ -206,7 +206,7 @@ public class PesoDAO implements DAO<Peso> {
 				peso = new Peso();
 				peso.setId(rs.getInt("id"));
 				peso.setValor(rs.getDouble("valor"));
-				peso.setTipoPeso(TipoPeso.valueOf(rs.getInt("tipopeso")));
+				peso.setTipoPeso(TipoPeso.valueOf(rs.getInt("tipo_peso")));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

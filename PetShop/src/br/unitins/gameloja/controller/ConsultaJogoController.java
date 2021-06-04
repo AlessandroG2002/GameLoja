@@ -11,45 +11,45 @@ import javax.inject.Named;
 
 import br.unitins.gameloja.application.Util;
 import br.unitins.gameloja.dao.DAO;
-import br.unitins.gameloja.dao.ProdutoDAO;
+import br.unitins.gameloja.dao.JogoDAO;
 import br.unitins.gameloja.model.Peso;
-import br.unitins.gameloja.model.Produto;
+import br.unitins.gameloja.model.Jogo;
 import br.unitins.gameloja.model.TipoPeso;
 
 @Named
 @ViewScoped
-public class ConsultaProdutoController implements Serializable {
+public class ConsultaJogoController implements Serializable {
 	
 	private static final long serialVersionUID = -7607053657604748068L;
-	private List<Produto> listaProduto = null;
+	private List<Jogo> listaJogo = null;
 	private Integer tipoFiltro;
 	private String filtro;
 	
-	public String novoProduto() {
-		return "produto.xhtml?faces-redirect=true";
+	public String novoJogo() {
+		return "jogo.xhtml?faces-redirect=true";
 	}
 	
-	public String editar(Produto usu) {
-		ProdutoDAO dao = new ProdutoDAO();
-		Produto produto = dao.obterUm(usu.getId());
+	public String editar(Jogo usu) {
+		JogoDAO dao = new JogoDAO();
+		Jogo jogo = dao.obterUm(usu.getId());
 		Flash flash =  FacesContext.getCurrentInstance().getExternalContext().getFlash();
-		flash.put("produtoFlash", produto);
+		flash.put("jogoFlash", jogo);
 		
-		return "produto.xhtml?faces-redirect=true";
+		return "jogo.xhtml?faces-redirect=true";
 	}
 	
-	public List<Produto> getListaProduto() {
-		if (listaProduto == null) {
-			DAO<Produto> dao = new ProdutoDAO();
-			listaProduto = dao.obterTodos();
-			if (listaProduto == null)
-				listaProduto = new ArrayList<Produto>();
+	public List<Jogo> getListaJogo() {
+		if (listaJogo == null) {
+			DAO<Jogo> dao = new JogoDAO();
+			listaJogo = dao.obterTodos();
+			if (listaJogo == null)
+				listaJogo = new ArrayList<Jogo>();
 		}
-		return listaProduto;
+		return listaJogo;
 	}
 
-	public void setListaProduto(List<Produto> listaProduto) {
-		this.listaProduto = listaProduto;
+	public void setListaJogo(List<Jogo> listaJogo) {
+		this.listaJogo = listaJogo;
 	}
 
 	public Integer getTipoFiltro() {

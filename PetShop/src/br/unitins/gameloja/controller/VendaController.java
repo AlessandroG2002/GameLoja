@@ -9,9 +9,9 @@ import javax.inject.Named;
 
 import br.unitins.gameloja.application.Session;
 import br.unitins.gameloja.application.Util;
-import br.unitins.gameloja.dao.ProdutoDAO;
+import br.unitins.gameloja.dao.JogoDAO;
 import br.unitins.gameloja.model.ItemVenda;
-import br.unitins.gameloja.model.Produto;
+import br.unitins.gameloja.model.Jogo;
 
 @Named
 @ViewScoped
@@ -20,17 +20,17 @@ public class VendaController implements Serializable {
 	private static final long serialVersionUID = 4860609187938109341L;
 	private Integer tipoFiltro;
 	private String filtro;
-	private List<Produto> listaProduto;
+	private List<Jogo> listaJogo;
 	
 	public void pesquisar() {
-		ProdutoDAO dao = new ProdutoDAO();
+		JogoDAO dao = new JogoDAO();
 		if (getTipoFiltro() == 1)
-			setListaProduto(dao.obterPeloNome(filtro));
+			setListaJogo(dao.obterPeloNome(filtro));
 		else
-			setListaProduto(dao.obterPelaDescricao(filtro));
+			setListaJogo(dao.obterPelaDescricao(filtro));
 	}
 	
-	public void addCarrinho(Produto produto) {
+	public void addCarrinho(Jogo jogo) {
 		// obtendo o carrinho da sessao
 		@SuppressWarnings("unchecked")
 		List<ItemVenda> carrinho = (List<ItemVenda>) Session.getInstance().get("carrinho");
@@ -40,9 +40,9 @@ public class VendaController implements Serializable {
 		
 		
 		ItemVenda iv = new ItemVenda();
-		iv.setProduto(produto);
+		iv.setJogo(jogo);
 		iv.setQuantidade(1);
-		iv.setValorUnitario(produto.getPreco());
+		iv.setValorUnitario(jogo.getPreco());
 	
 		if (carrinho.contains(iv)) {
 			int index = carrinho.indexOf(iv);
@@ -67,12 +67,12 @@ public class VendaController implements Serializable {
 		this.filtro = filtro;
 	}
 
-	public List<Produto> getListaProduto() {
-		return listaProduto;
+	public List<Jogo> getListaJogo() {
+		return listaJogo;
 	}
 
-	public void setListaProduto(List<Produto> listaProduto) {
-		this.listaProduto = listaProduto;
+	public void setListaJogo(List<Jogo> listaJogo) {
+		this.listaJogo = listaJogo;
 	}
 
 	public Integer getTipoFiltro() {
